@@ -8,13 +8,15 @@ README = open(os.path.join(here, 'README.md')).read()
 requires = [
     'pyramid',
     'pyramid_debugtoolbar',
+    'gevent-socketio',
     'waitress',
+    'tweepy',
     ]
 
 setup(name='wheres_the_beer',
       version='0.0',
       description='wheres_the_beer',
-      long_description=README + '\n\n' + CHANGES,
+      long_description=README,
       classifiers=[
         "Programming Language :: Python",
         "Framework :: Pyramid",
