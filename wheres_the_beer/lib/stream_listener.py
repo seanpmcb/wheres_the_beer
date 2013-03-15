@@ -22,4 +22,3 @@ class StreamListener(tweepy.StreamListener):
                 'user_id': status.user.id
             }
             self.callback(self.server, self.ns_name, self.event, the_dict)
-            log.info('spm')
