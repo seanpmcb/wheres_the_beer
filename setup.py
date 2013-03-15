@@ -2,6 +2,8 @@ import os
 
 from setuptools import setup, find_packages
 
+version = '1.0'
+
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
@@ -14,7 +16,7 @@ requires = [
     ]
 
 setup(name='wheres_the_beer',
-      version='0.0',
+      version=version,
       description='wheres_the_beer',
       long_description=README,
       classifiers=[
