@@ -5,7 +5,6 @@ log = logging.getLogger(__name__)
 
 from wheres_the_beer.lib import config
 
-
 @view_config(route_name='home', renderer='templates/index.pt')
 def my_view(request):
     google_maps_key = config.get('google_maps_key')

@@ -4,8 +4,10 @@ from socketio.server import SocketIOServer
 from pyramid.paster import get_app
 from gevent import monkey; monkey.patch_all()
 import gevent
+import tweepy
 
 from wheres_the_beer.lib import config
+from wheres_the_beer.lib.stream_listener import StreamListener
 
 def broadcast_msg(server, ns_name, event, *args):
     pkt = dict(type="event",
@@ -17,15 +19,18 @@ def broadcast_msg(server, ns_name, event, *args):
         socket.send_packet(pkt)
 
 def send_tweets(server):
-    # stream = tweetstream.SampleStream(user, password)
-    # for tweet in stream:
-    #     broadcast_msg(server, '/tweets', 'tweet', tweet)
+    auth = tweepy.auth.OAuthHandler(config.get('twitter_key'),
+                                    config.get('twitter_secret'))
+    auth.set_access_token(config.get('twitter_access_token'),
+                          config.get('twitter_access_secret'))
+    listener = StreamListener(broadcast_msg, server, '/tweets', 'tweet')
+    streamer = tweepy.Stream(auth=auth, listener=listener, secure=True,
+                             retry_count=2)
 
-    while True:
-        print 'sending tweet'
-        broadcast_msg(server, '/tweets', 'tweet', 'my_tweet')
-        import time
-        time.sleep(1)
+    track = config.get('search_for').split(',')
+
+    streamer.filter(track=track)
+
 
 if __name__ == '__main__':
 
