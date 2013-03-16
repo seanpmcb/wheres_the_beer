@@ -1,5 +1,7 @@
 import tweepy
 
+import json
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -11,6 +13,7 @@ class StreamListener(tweepy.StreamListener):
         self.callback = callback
         self.ns_name = ns_name
         self.event = event
+        self.tweetfile = open('wheres_the_beer/static/data.json', 'a', 1)
 
     def on_status(self, status):
         if status.geo and status.geo.get('coordinates'):
@@ -21,4 +24,9 @@ class StreamListener(tweepy.StreamListener):
                 'username': status.user.screen_name,
                 'user_id': status.user.id
             }
-            self.callback(self.server, self.ns_name, self.event, the_dict)
+            try:
+                self.callback(self.server, self.ns_name, self.event, the_dict)
+                data = json.dumps(the_dict)
+                self.tweetfile.write(data + '\n')
+            except:
+                pass
