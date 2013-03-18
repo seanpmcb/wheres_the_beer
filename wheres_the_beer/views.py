@@ -13,7 +13,16 @@ def my_view(request):
 
 @view_config(route_name='old_data', renderer='json')
 def old_data_view(request):
-    the_file = open('wheres_the_beer/static/data.json', 'r')
+    when = request.params.get('when')
+    if when == 'friday':
+        filename = 'wheres_the_beer/static/friday.json'
+    elif when == 'weekend':
+        filename = 'wheres_the_beer/static/weekend.json'
+    elif when == 'today':
+        filename = 'wheres_the_beer/static/data.json'
+    else:
+        return {'data': []}
+    the_file = open(filename, 'r')
     data = []
     for line in the_file:
         data.append(json.loads(line))

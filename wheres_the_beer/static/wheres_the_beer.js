@@ -32,7 +32,7 @@ function plot_marker(marker){
 
 function plot_markers(){
     plot_marker(markers.shift());
-    setTimeout(plot_markers, 25);
+    setTimeout(plot_markers, 10);
 }
 
 $(document).ready(function() {
@@ -52,7 +52,9 @@ $(document).ready(function() {
         plot_marker(marker);
     });
 
-    $.getJSON("old_data", function(json){
+    var prmstr = window.location.search.substr(0);
+
+    $.getJSON("old_data"+prmstr, function(json){
         $.each(json.data, function(index, tweet){
             markers.push(make_marker(tweet));
         });
