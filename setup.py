@@ -9,6 +9,7 @@ README = open(os.path.join(here, 'README.md')).read()
 
 requires = [
     'pyramid',
+    'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'gevent-socketio',
     'waitress',
