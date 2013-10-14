@@ -14,14 +14,14 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function make_marker(tweet){
-        var coords = tweet.coordinates;
-        var myLatLng = new google.maps.LatLng(coords[0], coords[1]);
-        var marker = new google.maps.Marker({
-            animation: google.maps.Animation.DROP,
-            position: myLatLng,
-            title: tweet.username + ": " + tweet.text
-        });
-        return marker;
+    var coords = tweet.coordinates;
+    var myLatLng = new google.maps.LatLng(coords[0], coords[1]);
+    var marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        position: myLatLng,
+        title: "(" + tweet.matched_word + ") " + tweet.username + ": " + tweet.text
+    });
+    return marker;
 }
 
 function plot_marker(marker){
