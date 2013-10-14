@@ -1,13 +1,14 @@
 import sys
 
-from socketio.server import SocketIOServer
-from pyramid.paster import get_app
 from gevent import monkey; monkey.patch_all()
 import gevent
+from pyramid.paster import get_app
+from socketio.server import SocketIOServer
 import tweepy
 
 from wheres_the_beer.lib import config
 from wheres_the_beer.lib.stream_listener import StreamListener
+
 
 def broadcast_msg(server, ns_name, event, *args):
     pkt = dict(type="event",
@@ -18,16 +19,17 @@ def broadcast_msg(server, ns_name, event, *args):
     for sessid, socket in server.sockets.iteritems():
         socket.send_packet(pkt)
 
+
 def send_tweets(server):
+    track = config.get('search_for').split(',')
+
     auth = tweepy.auth.OAuthHandler(config.get('twitter_key'),
                                     config.get('twitter_secret'))
     auth.set_access_token(config.get('twitter_access_token'),
                           config.get('twitter_access_secret'))
-    listener = StreamListener(broadcast_msg, server, '/tweets', 'tweet')
+    listener = StreamListener(broadcast_msg, server, '/tweets', 'tweet', words=track)
     streamer = tweepy.Stream(auth=auth, listener=listener, secure=True,
                              retry_count=2)
-
-    track = config.get('search_for').split(',')
 
     streamer.filter(track=track)
 
