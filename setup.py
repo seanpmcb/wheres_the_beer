@@ -14,6 +14,7 @@ requires = [
     'gevent-socketio',
     'waitress',
     'tweepy',
+    'gevent',
     ]
 
 setup(name='wheres_the_beer',
